@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 def upload_avatar_path(instance, file):
-    return 'images/users/avatars/{0}/{1}'.format(instance.pk, file)
+    return 'users/images/avatars/{0}/{1}'.format(str(instance.id), file)
 
 
 class UserManager(BaseUserManager):
@@ -31,6 +31,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    id = models.AutoField(_('id'), auto_created=True, primary_key=True)
     username = models.CharField(_('username'),  max_length=150, db_column='username', unique=True,
                                 help_text=_('Required. 150 character or fewer. Letters, digits and ./-/_ only.'),
                                 validators=[],
@@ -87,6 +88,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         return send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def save(self, *args, **kwargs):
+        if self.id is None and self.avatar:
+            image = self.avatar
+            self.avatar = None
+            super().save(*args, **kwargs)
+            self.avatar = image
+        return super().save(*args, **kwargs)
 
     @property
     def is_staff(self):

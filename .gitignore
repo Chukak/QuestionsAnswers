@@ -1,0 +1,8 @@
+*.cnf
+*.ini
+*.log
+uwsgi_params
+[__pycache__]
+temp/
+venv/
+.idea

@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
         extra.setdefault('is_superuser', False)
         return self._create_user(username, password, email, **extra)
 
-    def create_super_user(self, username, password, email, **extra):
+    def create_superuser(self, username, password, email, **extra):
         email = self.normalize_email(email)
         user = self._create_user(username, password, email, **extra)
         user.is_admin = True
@@ -61,18 +61,20 @@ class User(AbstractBaseUser, PermissionsMixin):
                                error_messages={
                                    'invalid': _('Please choice a valid image format.'),
                                })
-    rating = models.IntegerField(_('rating'), max_length=10000, db_column='rating', default=0)
+    rating = models.IntegerField(_('rating'), db_column='rating', default=0)
     is_active = models.BooleanField(_('active'), default=True)
+    is_admin = models.BooleanField(_('admin'), default=False)
     date_joined = models.DateTimeField(_('date joined'), db_column='date_joined', auto_now_add=True)
 
     objects = UserManager()
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['username', 'email']
+    REQUIRED_FIELDS = ['email']
 
     class Meta:
         verbose_name = _('user')
+        db_table = 'user'
 
     def __str__(self):
         return self.username
@@ -85,3 +87,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         return send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    @property
+    def is_staff(self):
+        return self.is_admin

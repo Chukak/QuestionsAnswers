@@ -15,21 +15,24 @@ class UserCreationForm(ModelForm):
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'avatar')
 
+    # clean method for password field
     def clean_password(self):
         password = self.cleaned_data.get('password', '')
         if not password:
-            raise forms.ValidationError('Not is password')
+            raise forms.ValidationError(_('Not is password'))
         return password
 
 
 # User login form
 class UserLoginForm(forms.Form):
+    # username field
     username = forms.CharField(max_length=150, required=True, label=_('Username'),
                                validators=[],
                                error_messages={
                                    'invalid': _('No such user.'),
                                },
                                widget=forms.TextInput())
+    # password field
     password = forms.CharField(max_length=32, required=True, label=_('Password'),
                                validators=[],
                                error_messages={

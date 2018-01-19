@@ -5,4 +5,5 @@ uwsgi_params
 [__pycache__]
 temp/
 venv/
+media/
 .idea

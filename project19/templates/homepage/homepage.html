@@ -4,5 +4,14 @@
 
 
 {% block content %}
-<p>KUKUKUKU</p>
+<p>HOMEPAGE</p>
+{% if request.user.is_authenticated %}
+<a href="{% url 'accounts:detail' request.user.pk %}">Account</a>
+<a href="{% url 'accounts:update' request.user.pk %}">Update account</a>
+<a href="{% url 'accounts:delete' request.user.pk %}">Delete account</a>
+<a href="{% url 'auth:logout' %}">Logout</a>
+{% else %}
+<a href="{% url 'auth:login' %}">Login</a>
+<a href="{% url 'auth:register' %}">Registration</a>
+{% endif %}
 {% endblock content %}

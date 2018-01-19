@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^', include('apps.homepage.urls'), name='homepage'),
     url(r'^auth/', include('apps.auth.urls'), name='auth'),
-    #url(r'^account/', include('apps.accounts.urls'), name='accounts'),
+    url(r'^users/', include('apps.accounts.urls'), name='users'),
 ] + static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

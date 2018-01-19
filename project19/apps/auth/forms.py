@@ -4,7 +4,9 @@ from ..accounts.models import User
 from django.utils.translation import gettext_lazy as _
 
 
+# Model form for User model
 class UserCreationForm(ModelForm):
+    # password field
     password = forms.CharField(max_length=32, help_text=_('Required. 32 character or fewer.'),
                                required=True, label=_('Password'),
                                widget=forms.PasswordInput())
@@ -20,6 +22,7 @@ class UserCreationForm(ModelForm):
         return password
 
 
+# User login form
 class UserLoginForm(forms.Form):
     username = forms.CharField(max_length=150, required=True, label=_('Username'),
                                validators=[],

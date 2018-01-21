@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^', include('apps.homepage.urls'), name='homepage'),
     url(r'^auth/', include('apps.authentication.urls'), name='authentication'),
     url(r'^users/', include('apps.accounts.urls'), name='users'),
+    url(r'^questions/', include('apps.questions.urls'), name='questions'),
 ] + static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

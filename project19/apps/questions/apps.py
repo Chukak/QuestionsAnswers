@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class QandaConfig(AppConfig):
-    name = 'QandA'
+    name = 'questions'

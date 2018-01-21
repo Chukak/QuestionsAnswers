@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.accounts',
     'apps.authentication',
-    #'apps.QandA',
+    'apps.questions',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'

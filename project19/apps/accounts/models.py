@@ -5,6 +5,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+from .validators import validate_username, validate_last_name, validate_first_name
 
 
 # get path for avatar
@@ -43,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # username field
     username = models.CharField(_('username'),  max_length=150, db_column='username', unique=True,
                                 help_text=_('Required. 150 character or fewer. Letters, digits and ./-/_ only.'),
-                                validators=[],
+                                validators=[validate_username],
                                 error_messages={
                                     'unique': _('A user with this name already exists.'),
                                     'invalid': _('Enter a valid username.'),
@@ -58,14 +59,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     # first_name field
     first_name = models.CharField(_('first name'), max_length=30, db_column='first_name', blank=True,
                                   help_text=_('Not required. 30 character or fewer. Letters and - only.'),
-                                  validators=[],
+                                  validators=[validate_first_name],
                                   error_messages={
                                       'invalid': _('Enter a valid first name.')
                                   })
     # last_name field
     last_name = models.CharField(_('last name'), max_length=150, db_column='last_name', blank=True,
                                  help_text=_('Not required. 150 character or fewer. Letters and - only.'),
-                                 validators=[],
+                                 validators=[validate_last_name],
                                  error_messages={
                                      'invalid': _('Enter a valid last name.')
                                  })

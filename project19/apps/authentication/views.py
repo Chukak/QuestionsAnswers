@@ -10,7 +10,7 @@ from .utils import check_user_auth
 
 
 class CreateUser(CreateView):
-    template_name = 'auth/create.html'
+    template_name = 'authentication/create.html'
     form_class = UserCreationForm
     success_url = '/'
 
@@ -41,7 +41,7 @@ class CreateUser(CreateView):
 
 
 class LoginUser(FormView):
-    template_name = 'auth/login.html'
+    template_name = 'authentication/login.html'
     form_class = UserLoginForm
     success_url = '/'
 

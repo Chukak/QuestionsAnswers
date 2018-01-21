@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import CreateUser, LoginUser, logout_user
 
-app_name = 'auth'
+app_name = 'authentication'
 
 urlpatterns = [
     # create account, registration

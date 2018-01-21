@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0008_alter_user_username_max_length'),
+        ('authentication', '0008_alter_user_username_max_length'),
     ]
 
     operations = [
@@ -31,8 +31,8 @@ class Migration(migrations.Migration):
                 ('rating', models.IntegerField(db_column='rating', default=0, verbose_name='rating')),
                 ('is_active', models.BooleanField(default=True, verbose_name='active')),
                 ('date_joined', models.DateTimeField(auto_now_add=True, db_column='date_joined', verbose_name='date joined')),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
+                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='authentication.Group', verbose_name='groups')),
+                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='authentication.Permission', verbose_name='user permissions')),
             ],
             options={
                 'verbose_name': 'user',

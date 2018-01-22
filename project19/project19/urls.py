@@ -19,10 +19,17 @@ from django.conf import settings
 
 
 urlpatterns = [
+    # admin site
     url(r'^admin/', admin.site.urls, name='admin'),
+    # homepage
     url(r'^', include('apps.homepage.urls'), name='homepage'),
+    # authentication
     url(r'^auth/', include('apps.authentication.urls'), name='authentication'),
+    # users
     url(r'^users/', include('apps.accounts.urls'), name='users'),
+    # questions
     url(r'^questions/', include('apps.questions.urls'), name='questions'),
+    # questions and answers
+    url(r'^questions/(?P<pk>\d+)/answers/', include('apps.answers.urls'), name='answers'),
 ] + static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

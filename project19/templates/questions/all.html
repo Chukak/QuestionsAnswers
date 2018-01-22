@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for quest in question_list %}
+<a href="{% url 'questions:detail' quest.pk %}">{{ quest.title }}</a>
+<p>{{ quest.date_created }}</p>
+<p>{{ quest.user_id.username }}</p>
+{% endfor %}
+<ul class="pagination">
+  <li>
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">
+        prev
+      </a>
+    {% else %}
+      <span>prev</span>
+    {% endif %}
+  </li>
+
+
+  {% for page_number in paginator.page_range %}
+    {% if page_number == page_obj.number %}
+      <li class="active">
+        <span>{{ page_number }}</span>
+      </li>
+    {% else %}
+      <li>
+        <a href="?page={{ page_number }}">
+          {{ page_number }}
+        </a>
+      </li>
+    {% endif %}
+  {% endfor %}
+
+
+  <li>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">
+        next
+      </a>
+    {% else %}
+      <span>next</span>
+    {% endif %}
+  </li>
+</ul>
+
+{% endblock content %}

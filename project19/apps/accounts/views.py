@@ -15,7 +15,7 @@ class AccountsMixin(object):
 
 
 # detail view account with login required ans mixin
-class AccountDetail(DetailView, LoginRequiredMixin, AccountsMixin):
+class AccountDetail(DetailView, AccountsMixin, LoginRequiredMixin):
     template_name = 'accounts/detail.html'
     model = User
     # setting for login required
@@ -30,7 +30,7 @@ class AccountDetail(DetailView, LoginRequiredMixin, AccountsMixin):
 
 
 # update view account with login required and mixin
-class AccountUpdate(UpdateView, LoginRequiredMixin, AccountsMixin):
+class AccountUpdate(UpdateView, AccountsMixin, LoginRequiredMixin):
     template_name = 'accounts/update.html'
     form_class = UserUpdateForm
     model = User
@@ -53,7 +53,7 @@ class AccountUpdate(UpdateView, LoginRequiredMixin, AccountsMixin):
 
 
 # Delete view with login required ans mixin
-class AccountDelete(DeleteView, LoginRequiredMixin, AccountsMixin):
+class AccountDelete(DeleteView, AccountsMixin, LoginRequiredMixin):
     model = User
     template_name = 'accounts/delete.html'
     success_url = '/'

@@ -19,7 +19,7 @@ class Question(models.Model):
                              })
     # text question
     text = models.TextField(_('text'), max_length=30000, db_column='text',
-                            help_text=_('Required. 30000 character or fewer. Ask a question.'),
+                            help_text=_('Required. 30000 characters limit. Ask a question.'),
                             validators=[],
                             error_messages={
                                 'invalid': _('Your question not valid. Check text and try again.'),

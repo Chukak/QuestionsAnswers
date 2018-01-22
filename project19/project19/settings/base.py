@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.authentication',
     'apps.questions',
+    'apps.answers',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'

@@ -1,8 +1,9 @@
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CreateQuestionForm, UpdateQuestionForm
 from ..accounts.models import User
+from ..answers.models import Answer
 from .models import Question
 
 
@@ -48,6 +49,28 @@ class DeleteQuestion(DeleteView, LoginRequiredMixin):
     # login required settings
     login_url = '/'
     redirect_field_name = None
+
+
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+class ListQuestions(ListView):
+    template_name = 'questions/all.html'
+    model = Question
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by('-date_created')
+
+
+class DetailQuestion(DetailView):
+    template_name = 'questions/detail.html'
+    model = Question
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        question = Question.objects.get(id=self.kwargs['pk'])
+        context['answers'] = Answer.objects.filter(question_id=question.id)
+        return context
 
 
 

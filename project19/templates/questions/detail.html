@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>{{ question.title }}</h1>
+<p>Автор: {{ question.user_id.username }}</p>
+<p>{{ question.date_created }}</p>
+<br>
+<br>
+{% autoescape off %}
+{{ question.text }}
+{% endautoescape %}
+
+<a href="{% url 'answers:create' question.id %}">Create answer</a>
+
+{% for answer in answers %}
+    <p>{{ answer.user_id.username }}</p>
+    {{ answer.text }}
+    {% if answer.user_id.id == request.user.id %}
+        <a href="{% url 'answers:update' question.id answer.id %}">Update answer</a>
+        <a href="{% url 'answers:delete' question.id answer.id %}">delete answer</a>
+    {% endif %}
+{% endfor %}
+
+
+{% endblock content %}

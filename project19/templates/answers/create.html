@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Create answer{% endblock title %}
+
+{% block content %}
+<form class="form-signin" method="post" enctype="multipart/form-data">
+        <!-- Token django CSRF -->
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn btn-primary btn-block" type="submit" value="Go">
+    </form>
+{% endblock content %}

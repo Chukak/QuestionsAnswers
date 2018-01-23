@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView, DeleteView
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
+from ..answers.models import Answer
+from ..questions.models import Question
 from .models import User
 from .forms import UserUpdateForm
 
@@ -65,6 +67,32 @@ class AccountDelete(DeleteView, AccountsMixin, LoginRequiredMixin):
     def delete(self, request, *args, **kwargs):
         self.get_object().avatar.delete(save=True)
         return super().delete(request, *args, **kwargs)
+
+
+# list user answers
+class ListUserAnswers(ListView, LoginRequiredMixin):
+    template_name = 'accounts/user_answers.html'
+    model = Answer
+    # login required settings
+    login_url = '/'
+    redirect_field_name = None
+
+    # get queryset
+    def get_queryset(self):
+        return Answer.objects.filter(user_id=self.kwargs['pk'])
+
+
+# list user questions
+class ListUserQuestions(ListView, LoginRequiredMixin):
+    template_name = 'accounts/user_questions.html'
+    model = Question
+    # login required settings
+    login_url = '/'
+    redirect_field_name = None
+
+    # get queryset
+    def get_queryset(self):
+        return Question.objects.filter(user_id=self.kwargs['pk'])
 
 
 

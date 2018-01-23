@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^(?P<answer>\d+)/update/$', UpdateAnswer.as_view(), name='update'),
     # delete answer
     url(r'^(?P<answer>\d+)/delete/$', DeleteAnswer.as_view(), name='delete'),
+
 ]

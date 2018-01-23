@@ -30,6 +30,6 @@ urlpatterns = [
     # questions
     url(r'^questions/', include('apps.questions.urls'), name='questions'),
     # questions and answers
-    url(r'^questions/(?P<pk>\d+)/answers/', include('apps.answers.urls'), name='answers'),
+    url(r'^questions/(?P<question>\d+)/answers/', include('apps.answers.urls'), name='answers'),
 ] + static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

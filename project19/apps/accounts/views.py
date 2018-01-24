@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
+from django.utils.translation import gettext_lazy as _
 from ..answers.models import Answer
 from ..questions.models import Question
 from .models import User
@@ -41,13 +41,6 @@ class AccountUpdate(UpdateView, AccountsMixin, LoginRequiredMixin):
     redirect_field_name = None
     login_url = '/'
 
-    # get object in template
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # get image field in template
-        context['avatar_object'] = self.object.avatar
-        return context
-
     # override func success url
     def get_success_url(self):
         # return success url with pk
@@ -62,10 +55,24 @@ class AccountDelete(DeleteView, AccountsMixin, LoginRequiredMixin):
     # settings for login required
     login_url = '/'
     redirect_field_name = None
+    # custom field
+
+    # override post method
+    def post(self, request, *args, **kwargs):
+        # set self.object
+        self.object = self.get_object()
+        # check password for user and if true return delete method
+        if self.object.check_password(request.POST.get('password_confirm')):
+            return self.delete(request, *args, **kwargs)
+        else:
+            # set error to context and response template
+            context = super().get_context_data(**kwargs)
+            context['error'] = _('Invalid password')
+            return self.render_to_response(context=context)
 
     # override delete method for delete file image from path
     def delete(self, request, *args, **kwargs):
-        self.get_object().avatar.delete(save=True)
+        self.object.avatar.delete(save=True)
         return super().delete(request, *args, **kwargs)
 
 

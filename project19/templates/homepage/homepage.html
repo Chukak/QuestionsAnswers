@@ -7,8 +7,6 @@
 <p>HOMEPAGE</p>
 {% if request.user.is_authenticated %}
 <a href="{% url 'accounts:detail' request.user.pk %}">Account</a>
-<a href="{% url 'accounts:update' request.user.pk %}">Update account</a>
-<a href="{% url 'accounts:delete' request.user.pk %}">Delete account</a>
 <a href="{% url 'accounts:user_questions' request.user.pk %}">All your questions</a>
 <a href="{% url 'accounts:user_answers' request.user.pk %}">All your answers</a>
 <a href="{% url 'authentication:logout' %}">Logout</a>

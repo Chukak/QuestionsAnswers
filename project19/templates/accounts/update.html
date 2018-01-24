@@ -3,11 +3,26 @@
 {% block title %} Update account{% endblock title %}
 
 {% block content %}
-<div class="col-xs-12">
+<div class="col-md-6 col-md-offset-3">
 <form class="form-horizontal" enctype="multipart/form-data" method="post">
     {% csrf_token %}
-    {{ form }}
+    {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-warning alert-dismissible form-width" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times</span>
+            </button>
+            <strong>Error: </strong>{{ error }}
+        </div>
+        {% endfor %}
+        {{ field.label_tag }}
+        <span class="help-text text-info">{{ field.help_text }}</span>
+        <div class="form-input">
+            {{ field }}
+        </div>
+    {% endfor %}
     <input class="btn btn-default" value="Save" type="submit">
+    <a class="btn btn-link" href="{% url 'accounts:detail' request.user.pk %}" >Back</a>
 </form>
 </div>
 {% endblock content %}

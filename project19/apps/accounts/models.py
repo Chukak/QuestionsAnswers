@@ -4,6 +4,7 @@ from django.core.validators import EmailValidator, validate_email, validate_imag
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from .validators import validate_username, validate_last_name, validate_first_name
 
@@ -108,6 +109,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         return send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    # get avatar url or default avatar image
+    def get_avatar_url(self):
+        return self.avatar.url if self.avatar else settings.MEDIA_URL + 'default/avatar/default-avatar.png'
 
     # override save method
     def save(self, *args, **kwargs):

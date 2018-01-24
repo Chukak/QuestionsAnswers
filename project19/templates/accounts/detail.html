@@ -3,11 +3,18 @@
 {% block title %}Account{% endblock title %}
 
 {% block content %}
-<p>{{ object.username }}</p>
-<p>{{ object.first_name }}</p>
-<p>{{ object.last_name }}</p>
-<p>{{ object.avatar }}</p>
-<p>{{ object.rating }}</p>
-<p>{{ object.date_joined }}</p>
-<p>{{ object.is_active }}</p>
+<div class="col-md-5">
+    <img class="img-rounded img-account" src="{{ object.get_avatar_url }}">
+    <h1>{{ object.username }}</h1>
+    <h2>{{ object.first_name }} {{ object.last_name }}</h2>
+    <h4><p>On site with: {{ object.date_joined }}</p></h4>
+    <h4>Rating: {{ object.rating }}</h4>
+    {% if object.is_active %}
+        <h3>On site: Online</h3>
+    {% else %}
+        <h3>On site: Offline</h3>
+    {% endif %}
+    <a href="{% url 'accounts:update' request.user.pk %}">Update account</a>
+    <a href="{% url 'accounts:delete' request.user.pk %}">Delete account</a>
+</div>
 {% endblock content %}

@@ -61,6 +61,7 @@ class DeleteQuestion(DeleteView, LoginRequiredMixin):
 class ListQuestions(ListView):
     template_name = 'questions/all.html'
     model = Question
+    paginate_by = 6
 
     # get queryset
     def get_queryset(self):

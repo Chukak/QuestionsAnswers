@@ -3,6 +3,9 @@ from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.utils.decorators import method_decorator
+from django.forms import ValidationError
+from django.utils.translation import gettext_lazy as _
+from ..accounts.models import User
 from .forms import UserCreationForm, UserLoginForm
 from .utils import check_user_auth
 
@@ -59,6 +62,13 @@ class LoginUser(FormView):
             login(self.request, user_auth)
             return redirect(self.get_success_url())
         else:
+            # if form invalid, check errors and add error on field.errors
+            if not User.objects.filter(username=form.cleaned_data['username']).count():
+                # if user not exists
+                form.add_error('username', ValidationError(_('No such user'), code='invalid'))
+            else:
+                # if password invalid
+                form.add_error('password', ValidationError(_('Invalid password'), code='invalid'))
             return self.form_invalid(form)
 
 

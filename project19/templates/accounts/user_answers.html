@@ -1,49 +1,82 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h1 class="h-question">Your answers</h1>
+<div class="col-md-12">
+<div class="col-md-8">
 {% for answer in answer_list %}
-<p>{{ answer.date_created }}</p>
-<p><a href="{% url 'questions:detail' answer.question_id.id %}">Question</a></p>
-<p>{{ answer.user_id.username }}</p>
-<p>{{ answer.text }}</p>
+  <div class="quest-info">
+    <a href="{% url 'questions:detail' answer.question_id.pk %}">{{ answer.question_id.title|truncatechars:80 }}</a>
+    <div>
+      {{ answer.question_id.text|truncatechars:200 }}
+    </div>
+    <div>
+      <h5><strong>You answered:</strong></h5>
+      {{ answer.text|truncatechars:200 }}
+    </div>
+    <div align="right" class="quest-username"><a href="#">{{ answer.user_id.username }}</a></div>
+    <div align="right">
+      <img class="quest-avatar" src="{{ answer.user_id.get_avatar_url }}" width="60" height="60">
+    </div>
+    <p class="quest-time" title="{{ quest.date_cteated }}">
+      answered {{ answer.date_created|timesince }} ago
+    </p>
+  </div>
 {% endfor %}
-<ul class="pagination">
-  <li>
+</div>
+<div class="col-md-4" style="height:100%;">
+<nav data-spy="affix" data-offset-top="60" data-offset-bottom="60">
+  <ul>
+    <li class="extra-li">
+      <a href="{% url 'accounts:detail' request.user.pk %}"><h4>Account</h4></a>
+    </li>
+    <li class="extra-li">
+      <a href="{% url 'accounts:user_questions' request.user.pk %}"><h4>All your questions</h4></a>
+    </li>
+    <li class="extra-li">
+      <a href="{% url 'questions:all' %}"><h4>All questions</h4></a>
+    </li>
+  </ul>
+</nav>
+</div>
+</div>
+{% if is_paginated %}
+<nav>
+    <ul class="pagination">
     {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}">
-        prev
-      </a>
-    {% else %}
-      <span>prev</span>
-    {% endif %}
-  </li>
-
-
-  {% for page_number in paginator.page_range %}
-    {% if page_number == page_obj.number %}
-      <li class="active">
-        <span>{{ page_number }}</span>
-      </li>
-    {% else %}
-      <li>
-        <a href="?page={{ page_number }}">
-          {{ page_number }}
+        <li>
+        <a href="?page={{ page_obj.previous_page_number }}">
+            <span>Previous</span>
         </a>
-      </li>
-    {% endif %}
-  {% endfor %}
-
-
-  <li>
-    {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}">
-        next
-      </a>
+        </li>
     {% else %}
-      <span>next</span>
+        <li class="disabled">
+        <a href="#">
+            <span>Previous</span>
+        </a>
+        </li>
     {% endif %}
-  </li>
-</ul>
 
+    {% for page in paginator.page_range %}
+        <li {% if page == page_obj.number %}class="active"{% endif %}>
+        <a href="?page={{ page }}">{{ page }}</a>
+        </li>
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <li>
+        <a href="?page={{ page_obj.next_page_number }}">
+            <span>Next</span>
+        </a>
+        </li>
+    {% else %}
+        <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
+        <a href="#">
+            <span>Next</span>
+        </a>
+        </li>
+    {% endif %}
+    </ul>
+</nav>
+{% endif %}
 {% endblock content %}

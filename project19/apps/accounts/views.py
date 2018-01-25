@@ -28,6 +28,9 @@ class AccountDetail(DetailView, AccountsMixin, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['object'] = self.object
+        # select object from table where user_id=self.object.id order by date_created desc limit 6
+        context['questions'] = list(Question.objects.filter(user_id=self.object.id).order_by('-date_created')[:6])
+        context['answers'] = list(Answer.objects.filter(user_id=self.object.id).order_by('-date_created')[:6])
         return context
 
 
@@ -80,6 +83,7 @@ class AccountDelete(DeleteView, AccountsMixin, LoginRequiredMixin):
 class ListUserAnswers(ListView, LoginRequiredMixin):
     template_name = 'accounts/user_answers.html'
     model = Answer
+    paginate_by = 5
     # login required settings
     login_url = '/'
     redirect_field_name = None
@@ -93,6 +97,7 @@ class ListUserAnswers(ListView, LoginRequiredMixin):
 class ListUserQuestions(ListView, LoginRequiredMixin):
     template_name = 'accounts/user_questions.html'
     model = Question
+    paginate_by = 5
     # login required settings
     login_url = '/'
     redirect_field_name = None

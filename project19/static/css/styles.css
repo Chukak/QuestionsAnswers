@@ -1,7 +1,7 @@
 .img-account {
-    height: 380px;
+    height: 370px;
     width: auto;
-    max-width: 480px;
+    max-width: 470px;
 }
 
 .form-input {
@@ -21,4 +21,59 @@
     display:block;
     text-align:left;
     font-size:12px;
+}
+
+.account-detail {
+    height: 640px;
+}
+
+.answers-area, .questions-area {
+    height: 560px;
+    overflow-y: auto;
+}
+
+.empty {
+    height: 120px;
+}
+
+.quest-info {
+
+}
+
+.quest-username {
+    padding-top:4px;
+    padding-bottom:2px;
+}
+
+.quest-avatar {
+    width:60px;
+    height:60px;
+    padding: 2px;
+}
+
+.quest-time {
+
+}
+
+.h-question {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.question-paginated {
+    padding: 5px;
+}
+
+li {
+    display:block;
+}
+
+.extra-li {
+    padding: 2px;
+    padding-left: 15px;
+
+}
+
+.extra-li:hover {
+    border-left: 2px solid #dfdfdf;
 }

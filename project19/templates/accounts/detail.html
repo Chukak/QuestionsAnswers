@@ -3,18 +3,51 @@
 {% block title %}Account{% endblock title %}
 
 {% block content %}
-<div class="col-md-5">
-    <img class="img-rounded img-account" src="{{ object.get_avatar_url }}">
-    <h1>{{ object.username }}</h1>
-    <h2>{{ object.first_name }} {{ object.last_name }}</h2>
-    <h4><p>On site with: {{ object.date_joined }}</p></h4>
-    <h4>Rating: {{ object.rating }}</h4>
-    {% if object.is_active %}
-        <h3>On site: Online</h3>
-    {% else %}
-        <h3>On site: Offline</h3>
-    {% endif %}
-    <a href="{% url 'accounts:update' request.user.pk %}">Update account</a>
-    <a href="{% url 'accounts:delete' request.user.pk %}">Delete account</a>
+<div class="account-detail">
+    <div class="col-md-4">
+        <img class="img-rounded img-account" src="{{ object.get_avatar_url }}">
+        <h1>{{ object.username }}</h1>
+        <h2>{{ object.first_name }} {{ object.last_name }}</h2>
+        <h4><p>On site with: {{ object.date_joined }}</p></h4>
+        <h4>Rating: {{ object.rating }}</h4>
+        {% if object.is_active %}
+            <h3>On site: Online</h3>
+        {% else %}
+            <h3>On site: Offline</h3>
+        {% endif %}
+
+    </div>
+    <div class="col-md-4">
+        <h2>10 Last questions</h2>
+        <div class="questions-area">
+            {% for quest in questions %}
+                <div class="questions">
+                    <a href="{% url 'questions:detail' quest.pk %}"><h3>{{ quest.title|truncatechars:60 }}</h3></a>
+                    <h4>Created: {{ quest.date_created }}</h4>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h2>10 last answers</h2>
+        <div class="answers-area">
+            {% for answer in answers %}
+                <div class="answers">
+                    <a href="{% url 'questions:detail' answer.question_id.pk %}"><h3>{{ answer.question_id.title|truncatechars:60  }}</h3></a>
+                    <h4>Created: {{ answer.date_created }}</h4>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <a class="btn btn-link" href="{% url 'accounts:update' request.user.pk %}"><h4>Update account</h4></a>
+    <a class="btn btn-link" href="{% url 'accounts:delete' request.user.pk %}"><h4>Delete account</h4></a>
+</div>
+<div class="col-md-4">
+    <a class="btn btn-link" href="{% url 'accounts:user_questions' request.user.pk %}"><h4>Your questions</h4></a>
+</div>
+<div class="col-md-4">
+    <a class="btn btn-link" href="{% url 'accounts:user_answers' request.user.pk %}"><h4>Your answers</h4></a>
 </div>
 {% endblock content %}

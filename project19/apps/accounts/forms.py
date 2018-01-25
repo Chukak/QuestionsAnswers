@@ -24,7 +24,7 @@ class UserUpdateForm(ModelForm):
         # set widgets with attrs
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control form-control-inline'}),
-            'email': forms.TextInput(attrs={'class': 'form-control form-control-inline'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control form-control-inline'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control form-control-inline'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control form-control-inline'}),
             'avatar': CustomImageFieldWidget(),

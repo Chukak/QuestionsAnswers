@@ -9,11 +9,17 @@ class UserCreationForm(ModelForm):
     # password field
     password = forms.CharField(max_length=32, help_text=_('Required. 32 character or fewer.'),
                                required=True, label=_('Password'),
-                               widget=forms.PasswordInput())
+                               widget=forms.PasswordInput(attrs={'class': 'form-control form-control-inline'}))
 
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'avatar')
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control form-control-inline'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control form-control-inline'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control form-control-inline'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control form-control-inline'}),
+        }
 
     # clean method for password field
     def clean_password(self):
@@ -28,17 +34,11 @@ class UserLoginForm(forms.Form):
     # username field
     username = forms.CharField(max_length=150, required=True, label=_('Username'),
                                validators=[],
-                               error_messages={
-                                   'invalid': _('No such user.'),
-                               },
-                               widget=forms.TextInput())
+                               widget=forms.TextInput(attrs={'class': 'form-control form-control-inline'}))
     # password field
     password = forms.CharField(max_length=32, required=True, label=_('Password'),
                                validators=[],
-                               error_messages={
-                                   'invalid': _('Invalid password.'),
-                               },
-                               widget=forms.PasswordInput())
+                               widget=forms.PasswordInput(attrs={'class': 'form-control form-control-inline'}))
 
 
 

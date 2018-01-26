@@ -2,26 +2,87 @@
 
 {% block content %}
 
-
-<h1>{{ question.title }}</h1>
-<p>Автор: {{ question.user_id.username }}</p>
-<p>{{ question.date_created }}</p>
-<br>
-<br>
+<div class="col-md-12">
+    <h1>{{ question.title }}</h1>
+    <hr>
+</div>
+<div class="col-md-8">
+<span class="long-text">
 {% autoescape off %}
-{{ question.text }}
+    {{ question.text }}
 {% endautoescape %}
-
-<a href="{% url 'answers:create' question.id %}">Create answer</a>
-
+</span>
+<div align="right" class="quest-username"><a href="#">{{ question.user_id.username }}</a></div>
+<div align="right">
+     <img class="quest-avatar" src="{{ question.user_id.get_avatar_url }}" width="60" height="60">
+</div>
+<p class="quest-time" title="{{ quest.date_cteated }}">
+      asked {{ question.date_created|timesince }} ago
+</p>
+<div style="padding-top: 90px;">
+<hr>
 {% for answer in answers %}
-    <p>{{ answer.user_id.username }}</p>
-    {{ answer.text }}
-    {% if answer.user_id.id == request.user.id %}
-        <a href="{% url 'answers:update' question.id answer.id %}">Update answer</a>
-        <a href="{% url 'answers:delete' question.id answer.id %}">delete answer</a>
+   <span class="long-text">
+    {% autoescape off %}
+        {{ answer.text }}
+    {% endautoescape %}
+    </span>
+        <div align="right" class="quest-username"><a href="#">{{ answer.user_id.username }}</a></div>
+        <div align="right">
+            <img class="quest-avatar" src="{{ answer.user_id.get_avatar_url }}" width="60" height="60">
+        </div>
+    <p class="quest-time" title="{{ answer.date_cteated }}">
+      answered {{ answer.date_created|timesince }} ago
+    </p>
+    {% if request.user.pk == answer.user_id.id %}
+        <a class="btn btn-link" href="{% url 'answers:update' answer.question_id.pk answer.pk %}"><h4>Update answer</h4></a>
+        <a class="btn btn-link" href="{% url 'answers:delete' answer.question_id.pk answer.pk %}"><h4>Delete answer</h4></a>
     {% endif %}
+    <hr>
 {% endfor %}
-
-
+</div>
+</div>
+<div class="col-md-4" style="height:100%;">
+<nav data-spy="affix" data-offset-top="60" data-offset-bottom="60">
+  <ul>
+    {% if request.user.is_authenticated %}
+        {% if question.user_id.pk == request.user.pk %}
+            <li class="extra-li">
+              <a href="{% url 'questions:update' question.id %}"><h4>Update Question</h4></a>
+            </li>
+            <li class="extra-li">
+              <a href="{% url 'questions:delete' question.id %}"><h4>Delete Question</h4></a>
+            </li>
+            <hr>
+        {% endif %}
+    <li class="extra-li">
+      <a href="{% url 'answers:create' question.id %}"><h4>Create answer</h4></a>
+    </li>
+    <hr>
+    <li class="extra-li">
+      <a href="{% url 'accounts:detail' request.user.pk %}"><h4>Account</h4></a>
+    </li>
+    <li class="extra-li">
+      <a href="{% url 'accounts:user_questions' request.user.pk %}"><h4>All your questions</h4></a>
+    </li>
+    <li class="extra-li">
+      <a href="{% url 'questions:all' %}"><h4>All questions</h4></a>
+    </li>
+    <li class="extra-li">
+      <a href="{% url 'questions:create' %}"><h4>Create new question</h4></a>
+    </li>
+    {% else %}
+    <li class="extra-li">
+      <a href="{% url 'questions:all' %}"><h4>All questions</h4></a>
+    </li>
+    <li class="extra-li">
+      <a href="{% url 'authentication:register' %}"><h4>Registration</h4></a>
+    </li>
+    <li class="extra-li">
+      <a href="{% url 'authentication:login' %}"><h4>Login</h4></a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+</div>
 {% endblock content %}

@@ -43,8 +43,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     # id field
     id = models.AutoField(_('id'), auto_created=True, primary_key=True)
     # username field
-    username = models.CharField(_('username'),  max_length=150, db_column='username', unique=True,
-                                help_text=_('Required. 150 character or fewer. Letters, digits and ./-/_ only.'),
+    username = models.CharField(_('username'),  max_length=32, db_column='username', unique=True,
+                                help_text=_('Required. 32 character or fewer. Letters, digits and ./-/_ only.'),
                                 validators=[validate_username],
                                 error_messages={
                                     'unique': _('A user with this name already exists.'),

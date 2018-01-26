@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="h-question">Your questions</h1>
+<h1 >Your questions</h1>
+<hr>
 <div class="col-md-12">
 <div class="col-md-8">
 {% for quest in question_list %}
@@ -28,6 +29,9 @@
     </li>
     <li class="extra-li">
       <a href="{% url 'questions:all' %}"><h4>All questions</h4></a>
+    </li>
+    <li class="extra-li">
+      <a href="{% url 'questions:create' %}"><h4>Create new question</h4></a>
     </li>
     <li class="extra-li">
       <a href="{% url 'accounts:user_answers' request.user.pk %}"><h4>All your answers</h4></a>

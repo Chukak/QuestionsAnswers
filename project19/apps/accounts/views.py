@@ -1,3 +1,5 @@
+from django.shortcuts import redirect
+from django.core.urlresolvers import resolve
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView, DeleteView
@@ -16,8 +18,25 @@ class AccountsMixin(object):
         return self.model.object.get(id=self.kwargs['pk'])
 
 
+# override dispatch method for redirect
+class AccountDispatchMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        # get user
+        user = User.objects.get(id=kwargs['pk'])
+        # user == request.user
+        if user.id == request.user.id:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            # Example:
+            # this happened, if url - /accounts/9/ change to /accounts/10/ but user.id == 9
+            # redirect to correct url for this user
+            # this method only fo accounts
+            url = resolve(request.path).url_name
+            return redirect('accounts:' + str(url), pk=request.user.id)
+
+
 # detail view account with login required ans mixin
-class AccountDetail(DetailView, AccountsMixin, LoginRequiredMixin):
+class AccountDetail(AccountDispatchMixin, DetailView, AccountsMixin, LoginRequiredMixin):
     template_name = 'accounts/detail.html'
     model = User
     # setting for login required
@@ -35,7 +54,7 @@ class AccountDetail(DetailView, AccountsMixin, LoginRequiredMixin):
 
 
 # update view account with login required and mixin
-class AccountUpdate(UpdateView, AccountsMixin, LoginRequiredMixin):
+class AccountUpdate(AccountDispatchMixin, UpdateView, AccountsMixin, LoginRequiredMixin):
     template_name = 'accounts/update.html'
     form_class = UserUpdateForm
     model = User
@@ -51,7 +70,7 @@ class AccountUpdate(UpdateView, AccountsMixin, LoginRequiredMixin):
 
 
 # Delete view with login required ans mixin
-class AccountDelete(DeleteView, AccountsMixin, LoginRequiredMixin):
+class AccountDelete(AccountDispatchMixin, DeleteView, AccountsMixin, LoginRequiredMixin):
     model = User
     template_name = 'accounts/delete.html'
     success_url = '/'
@@ -80,7 +99,7 @@ class AccountDelete(DeleteView, AccountsMixin, LoginRequiredMixin):
 
 
 # list user answers
-class ListUserAnswers(ListView, LoginRequiredMixin):
+class ListUserAnswers(AccountDispatchMixin, ListView, LoginRequiredMixin):
     template_name = 'accounts/user_answers.html'
     model = Answer
     paginate_by = 5
@@ -94,7 +113,7 @@ class ListUserAnswers(ListView, LoginRequiredMixin):
 
 
 # list user questions
-class ListUserQuestions(ListView, LoginRequiredMixin):
+class ListUserQuestions(AccountDispatchMixin, ListView, LoginRequiredMixin):
     template_name = 'accounts/user_questions.html'
     model = Question
     paginate_by = 5

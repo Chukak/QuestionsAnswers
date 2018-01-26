@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, Http404
+from django.core.urlresolvers import resolve
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import gettext_lazy as _
 from .forms import CreateAnswerForm, UpdateAnswerForm
 from .models import Answer
 from ..questions.models import Question
@@ -18,8 +20,39 @@ class AnswerMixin(object):
         return reverse_lazy(self.success_url, kwargs={'question': self.object.question_id.pk})
 
 
+# Answer context mixin
+class AnswerContextMixin(object):
+    # get question object in template for create and update view
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        question = Question.objects.get(id=self.kwargs['question'], user_id=self.request.user.id)
+        context['question'] = question
+        return context
+
+
+# override dispatch method for redirect
+class AnswerDispatchMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        # get user
+        try:
+            # get answer
+            answer_ = Answer.objects.get(id=kwargs['answer'])
+            # user == request.user
+            if answer_.user_id.id == request.user.id:
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                # Example:
+                # this happened, if url - /answers/9/ change to /answers/10/ but user_id != request.user.id
+                # raise 404
+                # this method only fo questions
+                raise Http404
+        # if not answer
+        except ObjectDoesNotExist:
+            raise Http404
+
+
 # create answer with login required
-class CreateAnswer(AnswerMixin, CreateView, LoginRequiredMixin):
+class CreateAnswer(AnswerMixin, AnswerContextMixin, CreateView, LoginRequiredMixin):
     form_class = CreateAnswerForm
     template_name = 'answers/create.html'
     success_url = 'questions:detail'
@@ -52,7 +85,7 @@ class CreateAnswer(AnswerMixin, CreateView, LoginRequiredMixin):
 
 
 # update answer with login required
-class UpdateAnswer(AnswerMixin, UpdateView, LoginRequiredMixin):
+class UpdateAnswer(AnswerDispatchMixin, AnswerMixin, AnswerContextMixin, UpdateView, LoginRequiredMixin):
     form_class = UpdateAnswerForm
     model = Answer
     template_name = 'answers/update.html'
@@ -65,7 +98,7 @@ class UpdateAnswer(AnswerMixin, UpdateView, LoginRequiredMixin):
 
 
 # delete answer with login required
-class DeleteAnswer(AnswerMixin, DeleteView, LoginRequiredMixin):
+class DeleteAnswer(AnswerDispatchMixin, AnswerMixin, DeleteView, LoginRequiredMixin):
     template_name = 'answers/delete.html'
     model = Answer
     success_url = 'questions:detail'
@@ -74,6 +107,21 @@ class DeleteAnswer(AnswerMixin, DeleteView, LoginRequiredMixin):
     # login required settings
     login_url = '/'
     redirect_field_name = None
+
+    # override post method
+    def post(self, request, *args, **kwargs):
+        # set self.object
+        self.object = self.get_object()
+        # get user object
+        user = User.objects.get(id=request.user.pk)
+        # check password for user and if true return delete method
+        if user.check_password(request.POST.get('password_confirm')):
+            return self.delete(request, *args, **kwargs)
+        else:
+            # set error to context and response template
+            context = super().get_context_data(**kwargs)
+            context['error'] = _('Invalid password')
+            return self.render_to_response(context=context)
 
 
 # ///////////////////////////////////////////////////////////

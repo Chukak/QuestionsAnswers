@@ -77,3 +77,26 @@ li {
 .extra-li:hover {
     border-left: 2px solid #dfdfdf;
 }
+
+.question-text {
+    width: 635px;
+    height: 500px;
+}
+
+.long-text {
+    display:block;
+    width:630px;
+    word-wrap:break-word;
+    padding: 4px;
+}
+
+.long-text-answer {
+    display:block;
+    width:530px;
+    word-wrap:break-word;
+    padding: 4px;
+}
+
+.div-padding {
+    padding-bottom: 50px;
+}

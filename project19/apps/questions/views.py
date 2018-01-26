@@ -1,17 +1,42 @@
+from django.shortcuts import redirect, Http404
+from django.core.urlresolvers import resolve
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.translation import gettext_lazy as _
 from .forms import CreateQuestionForm, UpdateQuestionForm
 from ..accounts.models import User
 from ..answers.models import Answer
 from .models import Question
 
 
+# mixin for dispatch
+# override dispatch method for redirect
+class QuestionDispatchMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        # try get question
+        try:
+            quest = Question.objects.get(id=kwargs['question'])
+            # user == request.user
+            if quest.user_id.id == request.user.id:
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                # Example:
+                # this happened, if url - /questions/9/ change to /questions/10/ but user_id != request.user.id
+                # raise 404
+                # this method only fo questions
+                raise Http404
+        # if not question
+        except ObjectDoesNotExist:
+            raise Http404
+
+
 # create view with login required
 class CreateQuestion(CreateView, LoginRequiredMixin):
     template_name = 'questions/create.html'
     form_class = CreateQuestionForm
-    success_url = '/'
+    success_url = 'questions:detail'
     # login required settings
     login_url = '/'
     redirect_field_name = None
@@ -24,9 +49,14 @@ class CreateQuestion(CreateView, LoginRequiredMixin):
         form.instance.user_id = user
         return super().form_valid(form)
 
+    # override func success url
+    def get_success_url(self):
+        # return success url with pk
+        return reverse_lazy(self.success_url, kwargs={'question': self.object.pk})
+
 
 # update view with login required
-class UpdateQuestion(UpdateView, LoginRequiredMixin):
+class UpdateQuestion(QuestionDispatchMixin, UpdateView, LoginRequiredMixin):
     template_name = 'questions/update.html'
     form_class = UpdateQuestionForm
     model = Question
@@ -44,15 +74,35 @@ class UpdateQuestion(UpdateView, LoginRequiredMixin):
 
 
 # delete view with login required
-class DeleteQuestion(DeleteView, LoginRequiredMixin):
+class DeleteQuestion(QuestionDispatchMixin, DeleteView, LoginRequiredMixin):
     template_name = 'questions/delete.html'
     model = Question
-    success_url = '/'
+    success_url = 'accounts:user_questions'
     # get args from url
     pk_url_kwarg = 'question'
     # login required settings
     login_url = '/'
     redirect_field_name = None
+
+    # override post method
+    def post(self, request, *args, **kwargs):
+        # set self.object
+        self.object = self.get_object()
+        # get user object
+        user = User.objects.get(id=request.user.pk)
+        # check password for user and if true return delete method
+        if user.check_password(request.POST.get('password_confirm')):
+            return self.delete(request, *args, **kwargs)
+        else:
+            # set error to context and response template
+            context = super().get_context_data(**kwargs)
+            context['error'] = _('Invalid password')
+            return self.render_to_response(context=context)
+
+    # override func success url
+    def get_success_url(self):
+        # return success url with pk
+        return reverse_lazy(self.success_url, kwargs={'pk': self.object.user_id.pk})
 
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -80,7 +130,8 @@ class DetailQuestion(DetailView):
         context = super().get_context_data(**kwargs)
         question = Question.objects.get(id=self.kwargs['question'])
         # add answers in context
-        context['answers'] = Answer.objects.filter(question_id=question.id)
+        context['answers'] = list(Answer.objects.filter(question_id=question.id))
+        print(context, question.id)
         return context
 
 

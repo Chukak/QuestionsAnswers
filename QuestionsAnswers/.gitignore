@@ -1,0 +1,6 @@
+*.cnf
+*.log
+[__pycache__]
+temp/
+media/
+.idea

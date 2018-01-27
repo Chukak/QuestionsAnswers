@@ -44,15 +44,12 @@ Set up your nginx.conf. Example is in nginx directory, at file nginx.conf
 #YOURUSERNAME edit for your name or ```www www```
 Create QuestionsAnswer.com in your sites-available directory. Example is in nginx/sites-available, at file QuestionsAnswers.com.
 Replace {your_path_to_app} to path to projects.
-In project direcroty or other directory create uwsgi_params file and copy-paste this in file
-[uwsgi_params](https://github.com/nginx/nginx/blob/master/conf/uwsgi_params)
 
 Настройте ваш nginx.conf. Пример есть в папке nginx, в файле nginx.conf
 #YOURUSERNAME замените на ваше имя или ```www www```
 Создайте QuestionsAnwers.com в вашей sites-available папке. Пример есть в nginx/sites-available, в файле QuestionsAnswers.com.
-Замените {your_path_to_app} на путь до проекта/
-В папке проекта или любой другой создайте uwsgi_params файл и скопируйте это в файл
-[uwsgi_params](https://github.com/nginx/nginx/blob/master/conf/uwsgi_params)
+Замените {your_path_to_app} на путь до проекта.
+
 
 Go to nginx directory and create link in your sites-enabled directory. 
 
@@ -65,7 +62,16 @@ OR
 ``` ln -s {your_nginx_directory}/sites-available/QuestionsAnswers.com sites-enabled/ ```
 
 
-## Started 
+## Started
+
+### Set up django
+``` python manage.py makemigrations ```
+
+``` python manage.py migrate ```
+
+### Without nginx and uwsgi
+
+``` python manage.py runserver ```
 
 ### Nginx + uwsgi
 
@@ -75,18 +81,16 @@ Nginx должен быть запущен. В папке прокта запу�
 
 ``` uwsgi --ini uwsgi.ini ```
 
-### Without nginx and uwsgi
 
-``` python manage.py runserver ```
 
 And go to localhost:8000
 
 И перейдите на localhost:8000
 
 ## Databases
-In project used mysql database. Set your database in settings/development.py module
+In project used mysql database. Set your database in settings/development.py module. Default set slqlite3
 
-В проекте используется mysql. Установите свою базу даннных в settings/development.py module
+В проекте используется mysql. Установите свою базу даннных в settings/development.py module. По умолчанию slqlite3
 
 ## Notes 
 * *Channels not needs for this project

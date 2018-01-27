@@ -14,6 +14,27 @@
 <body>
     <!-- navbar -->
     <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'homepage:homepage' %}">Home</a>
+            </div>
+            <div class="navbar-right">
+                {% if request.user.is_authenticated %}
+                    <div class="username" style="display:inline-block;">
+                        <span><a class="btn btn-link" href="{% url 'accounts:detail' request.user.pk %}">
+                            <strong>{{ request.user.username|truncatechars:20 }}</strong>
+                        </a></span>
+                    </div>
+                    <div style="display:inline-block;">
+                        <img class="img img-circle avatar" src="{{ request.user.get_avatar_url }}">
+                    </div>
+                    <a class="btn btn-primary" href="{% url 'authentication:logout' %}" style="margin:5px;">Logout</a>
+                {% else %}
+                <a class="btn btn-info" href="{% url 'authentication:login' %}" style="margin:5px;">Login</a>
+                <a class="btn btn-primary" href="{% url 'authentication:register' %}" style="margin:5px;">Register</a>
+                {% endif %}
+            </div>
+        </div>
     </nav>
     <!-- Extra navbar -->
     {% block navbar %}

@@ -100,3 +100,12 @@ li {
 .div-padding {
     padding-bottom: 50px;
 }
+
+img.avatar {
+    width:40px;
+    height:40px;
+}
+
+.homepage-area-question {
+    padding-bottom:60px;
+}

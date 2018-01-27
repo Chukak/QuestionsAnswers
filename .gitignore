@@ -2,6 +2,7 @@
 *.log
 uwsgi_params
 [__pycache__]
+__pycache__
 temp/
 venv/
 media/

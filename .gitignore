@@ -1,5 +1,4 @@
 *.cnf
-*.ini
 *.log
 uwsgi_params
 [__pycache__]

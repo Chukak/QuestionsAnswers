@@ -28,6 +28,26 @@ Clone this repos
 
 ## Requirements
 
+### Create venv
+
+Create python 3.3+ environment 
+
+Создайте виртуальное окруение Python 3.3+
+
+#### Ubuntu/Debian
+
+``` sudo apt-get isntall python3-venv ```
+
+``` python3 -m venv venv ```
+
+``` . venv/bin/activate ``` 
+
+Or use other envs.
+
+Или используйте другие окружения.
+
+### Set requirements
+
 Go to project dir and run command
 
 Перейдите в папку проекта и запустите команду
@@ -38,7 +58,7 @@ Go to project dir and run command
 
 ## **Set up
 
-### Nginx + uwsgi
+### ***Nginx + uwsgi
 
 Set up your nginx.conf. Example is in nginx directory, at file nginx.conf
 #YOURUSERNAME edit for your name or ```www www```
@@ -51,9 +71,9 @@ Replace {your_path_to_app} to path to projects.
 Замените {your_path_to_app} на путь до проекта.
 
 
-Go to nginx directory and create link in your sites-enabled directory. 
+Create link in your sites-enabled directory. 
 
-Перейдите в директории nginx и создайте линк в папке sites-enabled.
+Создайте линк в папке sites-enabled.
 
 ``` ln -s /etc/nginx/sites-available/QuestionsAnswers.com sites-enabled/ ```
 
@@ -95,6 +115,7 @@ In project used mysql database. Set your database in settings/development.py mod
 ## Notes 
 * *Channels not needs for this project
 * **Your can use custom settings for nginx
+* ***More information about [nginx+uwsgi](http://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html)
 
 ## Authors 
 [Chukak](https://github.com/Chukak)

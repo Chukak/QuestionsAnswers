@@ -54,11 +54,15 @@ In project direcroty or other directory create uwsgi_params file and copy-paste 
 В папке проекта или любой другой создайте uwsgi_params файл и скопируйте это в файл
 [uwsgi_params](https://github.com/nginx/nginx/blob/master/conf/uwsgi_params)
 
-Create link in your sites-enabled directory. 
+Go to nginx directory and create link in your sites-enabled directory. 
 
-Создайте линк в папке sites-enabled.
+Перейдите в директории nginx и создайте линк в папке sites-enabled.
 
-``` ln -s sites-available/QuestionsAnswers.com sites-enabled/ ```
+``` ln -s /etc/nginx/sites-available/QuestionsAnswers.com sites-enabled/ ```
+
+OR
+
+``` ln -s {your_nginx_directory}/sites-available/QuestionsAnswers.com sites-enabled/ ```
 
 
 ## Started 

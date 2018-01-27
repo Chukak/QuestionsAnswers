@@ -1,5 +1,5 @@
 """
-WSGI config for project19 project.
+WSGI config for QuestionsAnswers project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -12,6 +12,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project19.settings.development")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "QuestionsAnswers.settings.development")
 
 application = get_wsgi_application()

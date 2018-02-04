@@ -6,23 +6,17 @@
 
 You need installed nginx and uwsgi
 
-Вам нужен установленный nginx
-
 ``` sudo apt-get install nginx ```
 and
 ``` pip install uwsgi ```
 
 Clone this repos
 
-Клонируйте репозиторий
-
 ``` git clone https://github.com/Chukak/QuestionsAnswers.git ```
 
 ### Without nginx and uwsgi
 
 Clone this repos
-
-Клонируйте репозиторий
 
 ``` git clone https://github.com/Chukak/QuestionsAnswers.git ```
 
@@ -31,8 +25,6 @@ Clone this repos
 ### Create venv
 
 Create python 3.3+ environment 
-
-Создайте виртуальное окруение Python 3.3+
 
 #### Ubuntu/Debian
 
@@ -44,13 +36,9 @@ Create python 3.3+ environment
 
 Or use other envs.
 
-Или используйте другие окружения.
-
 ### Set requirements
 
 Go to project dir and run command
-
-Перейдите в папку проекта и запустите команду
 
 ``` pip install -r requirements.txt ```
 
@@ -65,15 +53,8 @@ Set up your nginx.conf. Example is in nginx directory, at file nginx.conf
 Create QuestionsAnswer.com in your sites-available directory. Example is in nginx/sites-available, at file QuestionsAnswers.com.
 Replace {your_path_to_app} to path to projects.
 
-Настройте ваш nginx.conf. Пример есть в папке nginx, в файле nginx.conf
-#YOURUSERNAME замените на ваше имя или ```www www```
-Создайте QuestionsAnwers.com в вашей sites-available папке. Пример есть в nginx/sites-available, в файле QuestionsAnswers.com.
-Замените {your_path_to_app} на путь до проекта.
-
 
 Create link in your sites-enabled directory. 
-
-Создайте линк в папке sites-enabled.
 
 ``` ln -s /etc/nginx/sites-available/QuestionsAnswers.com sites-enabled/ ```
 
@@ -84,7 +65,7 @@ OR
 
 ## Started
 
-### Set up django
+### Set migrations django
 ``` python manage.py makemigrations ```
 
 ``` python manage.py migrate ```
@@ -97,24 +78,18 @@ OR
 
 Nginx should be launched. In project directory run command 
 
-Nginx должен быть запущен. В папке прокта запустите команду
-
 ``` uwsgi --ini uwsgi.ini ```
 
 
 
 And go to localhost:8000
 
-И перейдите на localhost:8000
-
 ## Databases
 In project used mysql database. Set your database in settings/development.py module. Default set slqlite3
 
-В проекте используется mysql. Установите свою базу даннных в settings/development.py module. По умолчанию slqlite3
-
 ## Notes 
 * *Channels not needs for this project
-* **Your can use custom settings for nginx
+* **You can use custom settings for nginx
 * ***More information about [nginx+uwsgi](http://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html)
 
 ## Authors 

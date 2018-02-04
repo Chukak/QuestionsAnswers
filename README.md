@@ -1,5 +1,8 @@
 # QuestionsAnswers
 
+## Documentation
+[Русский](https://github.com/Chukak/QuestionsAnswers/blob/master/readme_ru.md)
+
 ## Download
 
 ### Nginx + uwsgi 

@@ -7,19 +7,13 @@
 
 ### Nginx + uwsgi 
 
-You need installed nginx and uwsgi
+You need to install `nginx` and `uwsgi`.
 
 ``` sudo apt-get install nginx ```
-and
+
 ``` pip install uwsgi ```
 
-Clone this repos
-
-``` git clone https://github.com/Chukak/QuestionsAnswers.git ```
-
-### Without nginx and uwsgi
-
-Clone this repos
+Clone this repository
 
 ``` git clone https://github.com/Chukak/QuestionsAnswers.git ```
 
@@ -41,23 +35,20 @@ Or use other envs.
 
 ### Set requirements
 
-Go to project dir and run command
+Run command:
 
 ``` pip install -r requirements.txt ```
 
-##### *If you not work with Channels - ``` pip uninstall Channels ```
+## *Set up
 
-## **Set up
+### **Nginx + uwsgi
 
-### ***Nginx + uwsgi
+Set your `nginx.conf`. The example is in the nginx directory, at the file `nginx.conf`.
+`#YOURUSERNAME` edit for your name or `www www`
+Create `QuestionsAnswer.com` in your `sites-available` directory. The example is in the nginx/sites-available, at the file `QuestionsAnswers.com`.
+Replace {your_path_to_app} to path to the project.
 
-Set up your nginx.conf. Example is in nginx directory, at file nginx.conf
-#YOURUSERNAME edit for your name or ```www www```
-Create QuestionsAnswer.com in your sites-available directory. Example is in nginx/sites-available, at file QuestionsAnswers.com.
-Replace {your_path_to_app} to path to projects.
-
-
-Create link in your sites-enabled directory. 
+Create link in your `sites-enabled` directory. 
 
 ``` ln -s /etc/nginx/sites-available/QuestionsAnswers.com sites-enabled/ ```
 
@@ -79,22 +70,15 @@ OR
 
 ### Nginx + uwsgi
 
-Nginx should be launched. In project directory run command 
+Run nginx. GO to the project directory, and run the command:
 
 ``` uwsgi --ini uwsgi.ini ```
 
-
-
-And go to localhost:8000
+And go to `localhost:8000`
 
 ## Databases
-In project used mysql database. Set your database in settings/development.py module. Default set slqlite3
+The project uses the mysql database. Set your database in the `settings/development.py` module. THe default is slqlite3
 
 ## Notes 
-* *Channels not needs for this project
-* **You can use custom settings for nginx
-* ***More information about [nginx+uwsgi](http://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html)
-
-## Authors 
-[Chukak](https://github.com/Chukak)
-
+* *You can use custom settings for nginx
+* **More information about [nginx+uwsgi](http://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html)

@@ -1,5 +1,5 @@
 attrs==17.4.0
-Django==1.11
+Django==1.11.15
 Pillow==5.0.0
 python-memcached==1.59
 pytz==2017.3
